@@ -7,8 +7,11 @@ const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce');
 const path = require('path'); // Plugin qui sert dans l'upload des images et permet de travailler avec les répertoires et chemin de fichier
 
-// Connexion à la base de données mongoDB
-mongoose.connect('mongodb+srv://Zheyn:projet6@cluster0.ljrmd.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+
+require('dotenv').config();
+// Connexion à la base de données mongoDB et utilisation de process.env pour récupérer les informations de connexion caché dans le fichier .env (variable d'environnement)
+// Installation du package dotenv - npm install dotenv
+mongoose.connect(process.env.DB_URI,
   { useNewUrlParser: true,
     useUnifiedTopology: true })
   .then(() => console.log('Connexion à MongoDB réussie !'))
