@@ -1,4 +1,6 @@
 const Sauce = require('../models/sauce');
+
+// Récupération du module 'file system' de Node permettant de gérer ici les téléchargements et modifications d'images
 const fs = require('fs');
 
 exports.createSauce = (req, res, next) => {

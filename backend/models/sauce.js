@@ -1,6 +1,6 @@
-const mongoose = require("mongoose");
+const mongoose = require("mongoose"); // package mongoose
 
-const sauceSchema = mongoose.Schema({
+const sauceSchema = mongoose.Schema({ // Défini un schéma pour la collection sauce
   userId: { type: String, required: true },
   name: { type: String, required: true },
   manufacturer: { type: String, required: true },
@@ -14,4 +14,4 @@ const sauceSchema = mongoose.Schema({
   usersDisliked: { type: [String] },
 });
 
-module.exports = mongoose.model("Sauce", sauceSchema);
+module.exports = mongoose.model("Sauce", sauceSchema); // Exporte le modèle de la collection sauce
