@@ -1,7 +1,8 @@
 const express = require('express'); // Importation du framework Express
 const bodyParser = require('body-parser')
+const app = express(); 
 const mongoose = require('mongoose'); // Importation du plugin Mongoose pour se connecter à la base de données
-
+const mongoSanitize = require('express-mongo-sanitize'); // Importation du plugin Express-Mongo-Sanitize pour la gestion des données
 // Importations des routes
 const userRoutes = require('./routes/user');
 const sauceRoutes = require('./routes/sauce');
@@ -17,8 +18,8 @@ mongoose.connect(process.env.DB_URI,
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch(() => console.log('Connexion à MongoDB échouée !'));
 
+app.use(mongoSanitize()); // Utilisation du plugin Express-Mongo-Sanitize pour la gestion des données
 
-const app = express();
 
 // Middleware pour transformer le corps de la requête en JSON en objet JS.
 app.use(express.urlencoded({extended: true}));
@@ -38,4 +39,4 @@ app.use('/api/auth', userRoutes);
 
 app.use('/api/sauces', sauceRoutes);
 
-module.exports = app;
+module.exports = app; // Export de l'application
