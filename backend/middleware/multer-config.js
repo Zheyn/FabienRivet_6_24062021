@@ -6,17 +6,19 @@ const MIME_TYPES = {
   'image/png': 'png'
 };
 
-const storage = multer.diskStorage({
+const storage = multer.diskStorage({ 
   destination: (req, file, callback) => {
     callback(null, 'images');
   },
-  filename: (req, file, callback) => {
+  filename: (req, file, callback) => { 
     const name = file.originalname.split(' ').join('_');
     const extension = MIME_TYPES[file.mimetype];
     callback(null, name + Date.now() + '.' + extension);
   }
 });
 
-module.exports = multer({storage: storage}).single('image');
+const maxFileSize = 1024 * 1024 * 1; // 1MB - Limite la taille des images envoyées pour ne pas surcharger la base de données
+
+module.exports = multer({storage: storage, limits: {fileSize: maxFileSize} }).single('image');
 
 //mongosatize
