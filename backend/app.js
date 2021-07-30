@@ -33,7 +33,7 @@ app.use((req, res, next) => {
     next();
   });
 
-app.use('/images', express.static(path.join(__dirname, 'images'))); //// Midleware qui permet de charger les fichiers qui sont dans le repertoire images
+app.use('/images', express.static(path.join(__dirname, 'images'))); // Midleware qui permet de charger les fichiers qui sont dans le repertoire images
 
 app.use('/api/auth', userRoutes);
 
