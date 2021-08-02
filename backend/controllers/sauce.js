@@ -65,46 +65,81 @@ exports.like = (req, res, next) => {
   let sauceId = req.params.id
 
   if (like === 1) { // Si il s'agit d'un like
-    Sauce.updateOne({
-        _id: sauceId
-      }, {
-        // On push l'utilisateur et on incrémente le compteur de 1
-        $push: {
-          usersLiked: userId
-        },
-        $inc: {
-          likes: +1
-        }, // On incrémente de 1
-      })
-      .then(() => res.status(200).json({
-        message: 'j\'aime ajouté !'
-      }))
-      .catch((error) => res.status(400).json({
-        error
-      }))
-  }
-  if (like === -1) {
-    Sauce.updateOne( // S'il s'agit d'un dislike
-        {
+
+    Sauce.findOne({ _id: sauceId })
+    .then(sauce => {
+      if (!sauce.usersLiked.includes(userId)) {
+        Sauce.updateOne({
           _id: sauceId
         }, {
+          // On push l'utilisateur et on incrémente le compteur de 1
           $push: {
-            usersDisliked: userId
+            usersLiked: userId
+          },
+          $inc: {
+            likes: +1
+          }, // On incrémente de 1
+        })
+        .then(() => res.status(200).json({
+          message: 'j\'aime ajouté !'
+        }))
+        .catch((error) => res.status(400).json({
+          error
+        }))
+     }
+    })
+    .catch(error => res.status(400).json({ error }));
+  }
+  
+  if (like === -1) { // Si il s'agit d'un dislike
+
+    Sauce.findOne({ _id: sauceId })
+    .then(sauce => {
+      if (!sauce.usersDisliked.includes(userId)) {
+        Sauce.updateOne({
+          _id: sauceId
+        }, {
+          // On push l'utilisateur et on incrémente le compteur de 1
+          $push: {
+            usersLiked: userId
           },
           $inc: {
             dislikes: +1
           }, // On incrémente de 1
-        }
-      )
-      .then(() => {
-        res.status(200).json({
-          message: 'Dislike ajouté !'
         })
-      })
-      .catch((error) => res.status(400).json({
-        error
-      }))
+        .then(() => res.status(200).json({
+          message: 'Dislike ajouté'
+        }))
+        .catch((error) => res.status(400).json({
+          error
+        }))
+      }
+    })
+    .catch(error => res.status(400).json({ error }));
   }
+  // if (like === -1) {
+  //   Sauce.updateOne( // S'il s'agit d'un dislike
+  //       {
+  //         _id: sauceId
+  //       }, {
+  //         $push: {
+  //           usersDisliked: userId
+  //         },
+  //         $inc: {
+  //           dislikes: +1
+  //         }, // On incrémente de 1
+  //       }
+  //     )
+  //     .then(() => {
+  //       res.status(200).json({
+  //         message: 'Dislike ajouté !'
+  //       })
+  //     })
+  //     .catch((error) => res.status(400).json({
+  //       error
+  //     }))
+  // }
+
   if (like === 0) { // Si il s'agit d'annuler un like ou un dislike
     Sauce.findOne({
         _id: sauceId

@@ -10,8 +10,8 @@ const sauceSchema = mongoose.Schema({ // Défini un schéma pour la collection s
   heat: { type: Number, required: true },
   likes: { type: Number },
   dislikes: { type: Number },
-  usersLiked: { type: [String] },
-  usersDisliked: { type: [String] },
+  usersLiked: { type: Array },
+  usersDisliked: { type: Array },
 });
 
 module.exports = mongoose.model("Sauce", sauceSchema); // Exporte le modèle de la collection sauce
